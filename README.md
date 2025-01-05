@@ -61,13 +61,24 @@ apt install git
 cd /root
 ```
 ```bash
-git clone https://github.com/cleitonme/Whazing-SaaS.instalador.git whazinginstalador
+git clone https://github.com/cleitonme/premium.git whazingpremium
+```
+
+- usuario:
+```bash
+cleitonme
+```
+
+```bash
+- senha:
+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
+```
+
+```bash
+sudo chmod +x ./whazingpremium/whazing
 ```
 ```bash
-sudo chmod +x ./whazinginstalador/whazing
-```
-```bash
-cd ./whazinginstalador
+cd ./whazingpremium
 ```
 ```bash
 sudo ./whazing
