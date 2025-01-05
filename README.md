@@ -69,8 +69,8 @@ git clone https://github.com/cleitonme/premium.git whazingpremium
 cleitonme
 ```
 
-```bash
 - senha:
+```bash
 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
 ```
 
