@@ -208,74 +208,40 @@ inquiry_options() {
   printf "\n\n"
   printf "${WHITE} 💻 O que você precisa fazer?${GRAY_LIGHT}"
   printf "\n\n"
-  printf "   [1] Instalar\n"
-  printf "   [2] Atualizar whazing(antes de atualizar faça um Snapshots da VPS\n"
-  printf "   [3] Ativar Firewall\n"
-  printf "   [4] Desativar Firewall\n"
-  printf "   [5] Erro global/pg_filenode.map\n"
-  printf "   [6] Instalar N8N - necessario 1 dominio\n"
-  printf "   [7] Instalar TypeBot - necessario 4 dominios\n"
-  printf "   [8] Instalar Wordpress - necessario 1 dominio\n"
-  printf "   [9] Dominio com erro SSL\n"
-  printf "   [10] Liberar acesso portainer dominio SSL - necessario 1 dominio\n"
-  printf "   [11] Atualizar whazing BETA(antes de atualizar faça um Snapshots da VPS\n"
+  printf "   [1] Instalar N8N - necessario 1 dominio\n"
+  printf "   [2] Instalar TypeBot - necessario 4 dominios\n"
+  printf "   [3] Instalar Wordpress - necessario 1 dominio\n"
+  printf "   [4] Dominio com erro SSL\n"
+  printf "   [5] Liberar acesso portainer dominio SSL - necessario 1 dominio\n"
   printf "\n"
   read -p "> " option
 
   case "${option}" in
-    1) get_urls ;;
-
-
-    2) 
-      whazing_atualizar 
-      exit
-      ;;
-
-
-    3) 
-      ativar_firewall 
-      exit
-      ;;
-	  
-    4) 
-      desativar_firewall 
-      exit
-      ;;
-	  
-    5) 
-      Erro_global
-      exit
-      ;;
-	  
-    6) 
+ 
+    1) 
       Install_n8n
       exit
       ;;
 
-    7) 
+    2) 
       Install_typebot
       exit
       ;;
 	  
-    8) 
+    3) 
       Install_wordpress
       exit
       ;;
 	  
-    9) 
+    4) 
       Erro_ssl
       exit
       ;;
 	  
-    10) 
+    5) 
       Portainer_ssl
       exit
       ;;
-	  
-    11) 
-      whazing_atualizar_beta
-      exit
-      ;;	  
 	  
 
     *) exit ;;
