@@ -1,5 +1,9 @@
 #!/bin/bash
 
+git stash clear
+git stash
+git pull
+
 # reset shell colors
 tput init
 
