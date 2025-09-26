@@ -154,6 +154,7 @@ EOF
   sleep 2
   cd /root
   docker compose -f miniotypebot.yaml up -d
+  docker network connect bridge miniotypebot
 }
 
 typebotviewer_typebot() {
@@ -226,6 +227,7 @@ EOF
   sleep 2
   cd /root
   docker compose -f typebotviewer.yaml up -d
+  docker network connect bridge typebotviewer
 }
 
 typebotbuilder_typebot() {
@@ -298,6 +300,7 @@ EOF
   sleep 2
   cd /root
   docker compose -f typebotbuilder.yaml up -d
+  docker network connect bridge typebotbuilder
 }
 
 minio_caddy_setup() {
