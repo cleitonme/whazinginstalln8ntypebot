@@ -73,7 +73,6 @@ services:
     restart: always
     networks:
       - n8n_rede
-      - bridge
     ports:
       - 5678:5678
     volumes:
@@ -107,8 +106,6 @@ networks:
   n8n_rede:
     external: false
     name: n8n_rede
-  bridge:
-    external: true
 
 [-]EOF
 EOF
@@ -116,6 +113,7 @@ EOF
   sleep 2
   cd /root
   docker compose -f n8n.yaml up -d
+  docker network connect bridge n8n
 }
 
 n8n_caddy_setup() {
