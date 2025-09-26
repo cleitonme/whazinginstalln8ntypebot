@@ -134,35 +134,19 @@ Erro_global () {
   erro_banco
 }
 
-Erro_ssl () {
-  get_renovar_url
-  system_certbot_erro_setup
-}
-
 Install_n8n () {
   get_n8n_url
   postgresql_n8n
   stack_n8n
-  n8n_nginx_setup
-  system_nginx_restart
-  system_certbot_n8n_setup
+  n8n_caddy_setup
+  system_caddy_restart
   system_success_n8n
-}
-
-Install_wordpress () {
-  get_wordpress_url
-  stack_wordpress
-  wordpress_nginx_setup
-  system_nginx_restart
-  system_certbot_wordpress_setup
-  system_success_wordpress
 }
 
 Portainer_ssl () {
   get_portainer_url
-  portainer_nginx_setup
-  system_nginx_restart
-  system_certbot_portainer_setup
+  portainer_caddy_setup
+  system_caddy_restart
   system_success_portainer
 }
 
@@ -181,12 +165,8 @@ Install_typebot () {
   minio_typebot
   typebotviewer_typebot
   typebotbuilder_typebot
-  minio_nginx_setup
-  minio2_nginx_setup
-  type1_nginx_setup
-  type2_nginx_setup
-  system_nginx_restart
-  system_certbot_typebot_setup
+  minio_caddy_setup
+  system_caddy_restart
   system_success_type
 }
 
@@ -210,9 +190,7 @@ inquiry_options() {
   printf "\n\n"
   printf "   [1] Instalar N8N - necessario 1 dominio\n"
   printf "   [2] Instalar TypeBot - necessario 4 dominios\n"
-  printf "   [3] Instalar Wordpress - necessario 1 dominio\n"
-  printf "   [4] Dominio com erro SSL\n"
-  printf "   [5] Liberar acesso portainer dominio SSL - necessario 1 dominio\n"
+  printf "   [3] Liberar acesso portainer dominio SSL - necessario 1 dominio\n"
   printf "\n"
   read -p "> " option
 
@@ -229,16 +207,6 @@ inquiry_options() {
       ;;
 	  
     3) 
-      Install_wordpress
-      exit
-      ;;
-	  
-    4) 
-      Erro_ssl
-      exit
-      ;;
-	  
-    5) 
       Portainer_ssl
       exit
       ;;

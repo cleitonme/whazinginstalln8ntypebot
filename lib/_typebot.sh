@@ -300,6 +300,60 @@ EOF
   docker compose -f typebotbuilder.yaml up -d
 }
 
+minio_caddy_setup() {
+  print_banner
+  printf "${WHITE} 💻 Configurando Caddy (Minio e Typebot)...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  minio1_hostname=$(echo "${minio1_url/https:\/\/}")
+  minio2_hostname=$(echo "${minio2_url/https:\/\/}")
+  type1_hostname=$(echo "${type1_url/https:\/\/}")
+  type2_hostname=$(echo "${type2_url/https:\/\/}")
+
+  sudo su - root << EOF
+
+cat >> /etc/caddy/Caddyfile << END
+
+# --- Minio Web ---
+$minio1_hostname {
+  reverse_proxy 127.0.0.1:32772
+    request_body {
+        max_size 200MB
+    }
+}
+
+# --- Minio API ---
+$minio2_hostname {
+  reverse_proxy 127.0.0.1:32771
+    request_body {
+        max_size 200MB
+    }
+}
+
+# --- Typebot Viewer ---
+$type1_hostname {
+  reverse_proxy 127.0.0.1:8080
+    request_body {
+        max_size 200MB
+    }
+}
+
+# --- Typebot Builder ---
+$type2_hostname {
+  reverse_proxy 127.0.0.1:8081
+    request_body {
+        max_size 200MB
+    }
+}
+END
+
+EOF
+
+  sleep 2
+}
+
 minio_nginx_setup() {
   print_banner
   printf "${WHITE} 💻 Configurando nginx (minioweb)...${GRAY_LIGHT}"

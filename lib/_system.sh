@@ -500,6 +500,25 @@ EOF
 }
 
 #######################################
+# restarts nginx
+# Arguments:
+#   None
+#######################################
+system_caddy_restart() {
+  print_banner
+  printf "${WHITE} 💻 reiniciando caddy...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  sudo su - root <<EOF
+  sudo systemctl restart caddy
+EOF
+
+  sleep 2
+}
+
+#######################################
 # setup for nginx.conf
 # Arguments:
 #   None
@@ -674,6 +693,33 @@ system_certbot_erro_setup() {
 EOF
 
   sleep 20
+}
+
+portainer_caddy_setup() {
+  print_banner
+  printf "${WHITE} 💻 Configurando Caddy (portainer)...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  portainer_hostname=$(echo "${portainer_url/https:\/\/}")
+
+  sudo su - root << EOF
+
+cat >> /etc/caddy/Caddyfile << END
+
+# --- portainer ---
+$portainer_hostname {
+  reverse_proxy 127.0.0.1:9000
+    request_body {
+        max_size 200MB
+    }
+}
+END
+
+EOF
+
+  sleep 2
 }
 
 portainer_nginx_setup() {

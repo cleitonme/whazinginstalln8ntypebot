@@ -115,6 +115,33 @@ EOF
   docker compose -f n8n.yaml up -d
 }
 
+n8n_caddy_setup() {
+  print_banner
+  printf "${WHITE} 💻 Configurando Caddy (n8n)...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  n8n_hostname=$(echo "${n8n_url/https:\/\/}")
+
+  sudo su - root << EOF
+
+cat >> /etc/caddy/Caddyfile << END
+
+# --- n8n ---
+$n8n_hostname {
+  reverse_proxy 127.0.0.1:5678
+    request_body {
+        max_size 200MB
+    }
+}
+END
+
+EOF
+
+  sleep 2
+}
+
 n8n_nginx_setup() {
   print_banner
   printf "${WHITE} 💻 Configurando nginx (n8n)...${GRAY_LIGHT}"
