@@ -4,7 +4,7 @@
 tput init
 
 # checar se arquivo /etc/caddy/Caddyfile existe
-if [[ ! -f /etc/caddy/Caddyfile2 ]]; then
+if [[ ! -f /etc/caddy/Caddyfile ]]; then
     echo -e "\033[1;31m⚠️ Sua instalação não é compatível com este instalador. \033[0m"
     exit 1
 fi
