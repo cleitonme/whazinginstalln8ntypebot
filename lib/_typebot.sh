@@ -317,8 +317,20 @@ minio_caddy_setup() {
 
   sudo su - root << EOF
 
-cat >> /etc/caddy/Caddyfile << END
+# Função auxiliar para adicionar host se não existir
+add_caddy_host() {
+  local host="\$1"
+  local block="\$2"
 
+  if ! grep -q "^$host" /etc/caddy/Caddyfile; then
+    echo "\$block" >> /etc/caddy/Caddyfile
+  else
+    echo "Caddy já possui configuração para \$host, pulando..."
+  fi
+}
+
+# Blocos de configuração
+minio_web_block="
 # --- Minio Web ---
 $minio1_hostname {
   reverse_proxy 127.0.0.1:32772
@@ -326,7 +338,9 @@ $minio1_hostname {
         max_size 200MB
     }
 }
+"
 
+minio_api_block="
 # --- Minio API ---
 $minio2_hostname {
   reverse_proxy 127.0.0.1:32771
@@ -334,7 +348,9 @@ $minio2_hostname {
         max_size 200MB
     }
 }
+"
 
+typebot_viewer_block="
 # --- Typebot Viewer ---
 $type1_hostname {
   reverse_proxy 127.0.0.1:8080
@@ -342,7 +358,9 @@ $type1_hostname {
         max_size 200MB
     }
 }
+"
 
+typebot_builder_block="
 # --- Typebot Builder ---
 $type2_hostname {
   reverse_proxy 127.0.0.1:8081
@@ -350,7 +368,13 @@ $type2_hostname {
         max_size 200MB
     }
 }
-END
+"
+
+# Adiciona os hosts se não existirem
+add_caddy_host "$minio1_hostname" "$minio_web_block"
+add_caddy_host "$minio2_hostname" "$minio_api_block"
+add_caddy_host "$type1_hostname" "$typebot_viewer_block"
+add_caddy_host "$type2_hostname" "$typebot_builder_block"
 
 EOF
 

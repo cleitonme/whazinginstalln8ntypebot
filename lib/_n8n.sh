@@ -126,7 +126,8 @@ n8n_caddy_setup() {
   n8n_hostname=$(echo "${n8n_url/https:\/\/}")
 
   sudo su - root << EOF
-
+# Verifica se o host já existe no Caddyfile
+if ! grep -q "^$n8n_hostname" /etc/caddy/Caddyfile; then
 cat >> /etc/caddy/Caddyfile << END
 
 # --- n8n ---
@@ -137,7 +138,9 @@ $n8n_hostname {
     }
 }
 END
-
+else
+  echo "Caddy já possui configuração para $n8n_hostname, pulando..."
+fi
 EOF
 
   sleep 2
