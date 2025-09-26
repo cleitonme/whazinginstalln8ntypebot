@@ -22,6 +22,7 @@ services:
       - POSTGRES_PASSWORD=Admin33Admin77
     networks:
       - n8n_rede
+      - bridge
     volumes:
       - postgres_n8n:/var/lib/postgresql/data
     deploy:
@@ -44,6 +45,8 @@ networks:
   n8n_rede:
     external: false
     name: n8n_rede
+  bridge:
+    external: true
 
 [-]EOF
 EOF
