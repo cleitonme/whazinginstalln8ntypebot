@@ -3,6 +3,12 @@
 # reset shell colors
 tput init
 
+# checar se arquivo /etc/caddy/Caddyfile existe
+if [[ ! -f /etc/caddy/Caddyfile2 ]]; then
+    echo -e "\033[1;31m⚠️ Sua instalação não é compatível com este instalador. \033[0m"
+    exit 1
+fi
+
 # https://stackoverflow.com/questions/59895/how-to-get-the-source-directory-of-a-bash-script-from-within-the-script-itself
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
