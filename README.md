@@ -58,4 +58,4 @@ WHAZING
 
 ## Consultoria particular
 
-Para consultoria particular chamar (será cobrado por isso) 48 999416725 
+Para consultoria particular chamar (será cobrado por isso) (48) 3197-0599 
