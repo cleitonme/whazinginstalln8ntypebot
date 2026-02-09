@@ -17,7 +17,7 @@ cd /root
 services:
   postgres:
     container_name: postgresqltypebot
-    image: postgres:latest
+    image: postgres:17.2
     restart: always
     environment:
       - POSTGRES_PASSWORD=Admin33Admin77
