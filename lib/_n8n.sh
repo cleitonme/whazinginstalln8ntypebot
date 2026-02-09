@@ -66,6 +66,7 @@ n8n_hostname=$(echo "${n8n_url/https:\/\/}")
 sudo su - root << EOF
 cd /root
   cat <<[-]EOF > n8n.yaml
+
 services:
   postgres:
     container_name: postgresqln8n
@@ -79,16 +80,6 @@ services:
       - postgres_n8n:/var/lib/postgresql/data
     networks:
       - n8n_rede
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints:
-          - node.role == manager
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 1024M
 
   n8n:
     container_name: n8n
@@ -109,31 +100,20 @@ services:
       N8N_PROTOCOL: https
       WEBHOOK_URL: https://${N8N_HOST}/
       NODE_ENV: production
-      N8N_RELEASE_TYPE: stable
     volumes:
       - n8n_data:/data
     networks:
       - n8n_rede
     depends_on:
       - postgres
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints:
-          - node.role == manager
 
 volumes:
   postgres_n8n:
-    name: postgres_n8n
   n8n_data:
-    name: n8n_data
 
 networks:
   n8n_rede:
-    name: n8n_rede
-    driver: overlay
-
+    driver: bridge
 
 [-]EOF
 EOF
