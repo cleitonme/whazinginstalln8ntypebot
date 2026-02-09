@@ -136,7 +136,6 @@ Erro_global () {
 
 Install_n8n () {
   get_n8n_url
-  postgresql_n8n
   stack_n8n
   n8n_caddy_setup
   system_caddy_restart

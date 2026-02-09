@@ -67,45 +67,73 @@ sudo su - root << EOF
 cd /root
   cat <<[-]EOF > n8n.yaml
 services:
-  n8n:
-    container_name: n8n
-    image: n8nio/n8n
+  postgres:
+    container_name: postgresqln8n
+    image: postgres:latest
     restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Admin33Admin77
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_n8n:/var/lib/postgresql/data
     networks:
       - n8n_rede
-    ports:
-      - 5678:5678
-    volumes:
-      - n8n_data:/data
-    environment:
-      - DB_POSTGRESDB_PORT=5432
-      - DB_POSTGRESDB_USER=postgres
-      - DB_POSTGRESDB_PASSWORD=Admin33Admin77
-      - DB_TYPE=postgresdb
-      - DB_POSTGRESDB_DATABASE=postgres
-      - DB_POSTGRESDB_HOST=postgres
-      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      - N8N_HOST=$n8n_hostname
-      - N8N_PORT=5678
-      - N8N_PROTOCOL=https
-      - NODE_ENV=production
-      - WEBHOOK_URL=https://$n8n_hostname/	  
-      - N8N_RELEASE_TYPE=stable
     deploy:
       mode: replicated
       replicas: 1
       placement:
         constraints:
           - node.role == manager
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 1024M
+
+  n8n:
+    container_name: n8n
+    image: n8nio/n8n:latest
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      DB_TYPE: postgresdb
+      DB_POSTGRESDB_HOST: postgres
+      DB_POSTGRESDB_PORT: 5432
+      DB_POSTGRESDB_DATABASE: postgres
+      DB_POSTGRESDB_USER: postgres
+      DB_POSTGRESDB_PASSWORD: Admin33Admin77
+
+      N8N_HOST: ${N8N_HOST}
+      N8N_PORT: 5678
+      N8N_PROTOCOL: https
+      WEBHOOK_URL: https://${N8N_HOST}/
+      NODE_ENV: production
+      N8N_RELEASE_TYPE: stable
+    volumes:
+      - n8n_data:/data
+    networks:
+      - n8n_rede
+    depends_on:
+      - postgres
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+
 volumes:
+  postgres_n8n:
+    name: postgres_n8n
   n8n_data:
-    external: false
     name: n8n_data
 
 networks:
   n8n_rede:
-    external: false
     name: n8n_rede
+    driver: overlay
+
 
 [-]EOF
 EOF
